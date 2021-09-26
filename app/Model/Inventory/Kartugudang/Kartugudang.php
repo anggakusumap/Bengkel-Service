@@ -3,6 +3,7 @@
 namespace App\Model\Inventory\Kartugudang;
 
 use App\Model\FrontOffice\PenjualanSparepart;
+use App\Model\Inventory\DetailSparepart;
 use App\Model\Inventory\Rcv\Rcv;
 use App\Model\Inventory\Retur\Retur;
 use App\Model\Inventory\Sparepart;
@@ -20,7 +21,7 @@ class Kartugudang extends Model
     protected $primaryKey = 'id_kartu_gudang';
 
     protected $fillable = [
-        'id_sparepart',
+        'id_detail_sparepart',
         'id_bengkel',
         'kode_transaksi',
         'saldo_awal',
@@ -41,7 +42,7 @@ class Kartugudang extends Model
 
     public function Sparepart()
     {
-        return $this->belongsTo(Sparepart::class,'id_sparepart','id_sparepart');
+        return $this->belongsTo(DetailSparepart::class,'id_detail_sparepart','id_detail_sparepart');
     }
 
     protected static function booted()

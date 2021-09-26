@@ -23,10 +23,6 @@
 
     <div class="container-fluid mt-n10">
         <div class="card mb-4">
-            <div class="card card-header-actions">
-                <div class="card-header">List Sparepart
-                </div>
-            </div>
             <div class="card-body">
                 <div class="datatable">
                     @if(session('messageberhasil'))
@@ -83,11 +79,11 @@
                                         @foreach ($sparepart as $item)
                                         <tr role="row" class="odd">
                                             <th scope="row" class="small" class="sorting_1">{{ $loop->iteration}}</th>
-                                            <td>{{ $item->kode_sparepart }}</td>
-                                            <td>{{ $item->nama_sparepart }}</td>
-                                            <td>{{ $item->jenissparepart->jenis_sparepart }}</td>
-                                            <td>{{ $item->merksparepart->merk_sparepart }}</td>
-                                            <td>{{ $item->stock }}</td>
+                                            <td>{{ $item->Sparepart->kode_sparepart }}</td>
+                                            <td>{{ $item->Sparepart->nama_sparepart }}</td>
+                                            <td>{{ $item->Sparepart->jenissparepart->jenis_sparepart }}</td>
+                                            <td>{{ $item->Sparepart->merksparepart->merk_sparepart }}</td>
+                                            <td>{{ $item->qty_stok }} ({{ $item->Sparepart->Konversi->satuan }})</td>
                                         </tr>
                                         @endforeach
 

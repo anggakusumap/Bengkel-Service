@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\FrontOffice\CustomerBengkel;
 use App\Model\FrontOffice\MasterDataJenisPerbaikan;
 use App\Model\FrontOffice\MasterDataKendaraan;
+use App\Model\Inventory\DetailSparepart;
 use App\Model\Inventory\Kartugudang\Kartugudang;
 use App\Model\Inventory\Sparepart;
 use App\Model\Kepegawaian\Jabatan;
@@ -32,11 +33,20 @@ class PenerimaanServiceController extends Controller
     public function index()
     {
         $service_advisor = PenerimaanService::all();
-        $kendaraan = MasterDataKendaraan::all();
-        $customer_bengkel = CustomerBengkel::all();
-        $sparepart = Sparepart::with('Kartugudangpenjualan')->where('stock', '>', 0)->get();
+
+        $kendaraan = MasterDataKendaraan::with('JenisBengkel')
+        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
+        ->get();
+
+        $customer_bengkel = CustomerBengkel::get();
+        $sparepart = DetailSparepart::with('Sparepart','Kartugudangpenjualan')->where('qty_stok', '>', 0)->get();
         $pegawai = Pegawai::all();
-        $jasa_perbaikan = MasterDataJenisPerbaikan::all();
+
+        $jasa_perbaikan = MasterDataJenisPerbaikan::with('JenisBengkel')
+        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
+        ->get();
+
+
         $date = Carbon::today()->toDateString();
 
         $id = PenerimaanService::getId();
@@ -161,8 +171,6 @@ class PenerimaanServiceController extends Controller
         $service = new PenerimaanService;
         $service->id_pegawai = $request['id_pegawai'] = Auth::user()->pegawai->id_pegawai;
         $service->id_bengkel = $request['id_bengkel'] = Auth::user()->id_bengkel;
-
-
         $service->kode_sa = $request->kode_sa;
         $service->id_customer_bengkel = $request->id_customer_bengkel;
         $service->id_kendaraan = $request->id_kendaraan;
@@ -177,12 +185,15 @@ class PenerimaanServiceController extends Controller
         $temp1 = 0;
         foreach ($request->sparepart as $key => $item1) {
             $temp1 = $temp1 + $item1['total_harga'];
-            $sparepart = Sparepart::findOrFail($item1['id_sparepart']);
-            $sparepart->stock = $sparepart->stock - $item1['jumlah'];
 
-            if ($sparepart->stock >= $sparepart->stock_min) {
+            $sparepart = DetailSparepart::where('id_sparepart', $item1['id_sparepart'])->first();
+
+     
+            $sparepart->qty_stok = $sparepart->qty_stok - $item1['jumlah'];
+
+            if ($sparepart->qty_stok >= $sparepart->stok_min) {
                 $sparepart->status_jumlah = 'Cukup';
-            } else if ($sparepart->stock == 0) {
+            } else if ($sparepart->qty_stok == 0) {
                 $sparepart->status_jumlah = 'Habis';
             } else {
                 $sparepart->status_jumlah = 'Kurang';
@@ -201,7 +212,7 @@ class PenerimaanServiceController extends Controller
 
             $kartu_gudang->jumlah_keluar = $kartu_gudang->jumlah_keluar + $item1['jumlah'];
             $kartu_gudang->harga_beli = $kartu_gudang->harga + $item1['harga'];
-            $kartu_gudang->id_sparepart = $sparepart->id_sparepart;
+            $kartu_gudang->id_detail_sparepart = $sparepart->id_detail_sparepart;
             $kartu_gudang->kode_transaksi = $service->kode_sa;
             $kartu_gudang->tanggal_transaksi = $service->date;
             $kartu_gudang->jenis_kartu = 'Penjualan';

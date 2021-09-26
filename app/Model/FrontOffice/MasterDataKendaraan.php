@@ -2,6 +2,7 @@
 
 namespace App\Model\FrontOffice;
 
+use App\Model\SingleSignOn\JenisBengkel;
 use App\Scopes\OwnershipScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +14,7 @@ class MasterDataKendaraan extends Model
     protected $primaryKey = 'id_kendaraan';
 
     protected $fillable = [
-        'kode_kendaraan', 'nama_kendaraan', 'id_merk_kendaraan', 'id_jenis_kendaraan', 'id_bengkel'
+        'kode_kendaraan', 'nama_kendaraan', 'id_merk_kendaraan', 'id_jenis_kendaraan', 'id_jenis_bengkel'
     ];
 
     protected $hidden = [];
@@ -35,8 +36,8 @@ class MasterDataKendaraan extends Model
         return $getId = DB::table('tb_fo_master_kendaraan')->orderBy('id_kendaraan', 'DESC')->take(1)->get();
     }
 
-    protected static function booted()
+    public function JenisBengkel()
     {
-        static::addGlobalScope(new OwnershipScope);
+        return $this->belongsTo(JenisBengkel::class, 'id_jenis_bengkel', 'id_jenis_bengkel');
     }
 }

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Model\Inventory\DetailSparepart;
 use App\Model\Service\StokSparepart;
 use App\Model\Inventory\Sparepart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StokSparepartController extends Controller
 {
@@ -16,7 +18,9 @@ class StokSparepartController extends Controller
      */
     public function index()
     {
-        $sparepart = Sparepart::get();
+        $sparepart = DetailSparepart::with('Sparepart')
+        ->get();
+
         return view('pages.service.stok_sparepart.main', compact('sparepart'));
     }
 

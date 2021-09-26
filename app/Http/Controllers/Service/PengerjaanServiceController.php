@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\FrontOffice\CustomerBengkel;
 use App\Model\FrontOffice\MasterDataJenisPerbaikan;
 use App\Model\FrontOffice\MasterDataKendaraan;
+use App\Model\Inventory\DetailSparepart;
 use App\Model\Inventory\Kartugudang\Kartugudang;
 use App\Model\Inventory\Sparepart;
 use App\Model\Kepegawaian\Jabatan;
@@ -75,11 +76,17 @@ class PengerjaanServiceController extends Controller
     {
         $service_advisor = PenerimaanService::with('kendaraan', 'customer_bengkel', 'mekanik','pitstop', 'detail_sparepart.Merksparepart','detail_sparepart.Jenissparepart',
         'detail_sparepart', 'detail_perbaikan', 'bengkel')->find($id_service_advisor);
-        $kendaraan = MasterDataKendaraan::all();
+        $kendaraan = MasterDataKendaraan::with('JenisBengkel')
+        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
+        ->get();
+
         $customer_bengkel = CustomerBengkel::all();
-        $sparepart = Sparepart::with('Kartugudangpenjualan')->where('stock', '>', 0)->get();
+        $sparepart = DetailSparepart::with('Sparepart','Kartugudangpenjualan')->where('qty_stok', '>', 0)->get();
         $pegawai = Pegawai::all();
-        $jasa_perbaikan = MasterDataJenisPerbaikan::all();
+        $jasa_perbaikan = MasterDataJenisPerbaikan::with('JenisBengkel')
+        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
+        ->get();
+        
         $date = Carbon::today()->toDateString();
 
         $mekanik = Jabatan::with('pegawai.absensi_mekanik')->where('nama_jabatan', 'Mekanik')->get();
