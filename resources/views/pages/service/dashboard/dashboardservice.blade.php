@@ -68,7 +68,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <div class="small font-weight-bold text-primary mb-1">Jumlah Hadir Mekanik</div>
-                            <div class="h6">Jumlah : {{ $mekanik_count }}</div>
+                            {{-- <div class="h6">Jumlah : {{ $mekanik_count }}</div> --}}
                         </div>
                         <div class="ml-2"><svg class="svg-inline--fa fa-dollar-sign fa-w-9 fa-2x text-gray-200"
                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="dollar-sign"

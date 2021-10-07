@@ -19,11 +19,11 @@ class DashboardServiceController extends Controller
         $today = Carbon::now()->isoFormat('dddd');
         $tanggal_tahun = Carbon::now()->format('j F Y');
 
-        $mekanik = Jabatan::with('pegawai', 'pegawai.absensi_mekanik')->where('nama_jabatan', 'Mekanik')->get();
+        // $mekanik = Jabatan::with('pegawai', 'pegawai.absensi_mekanik')->where('nama_jabatan', 'Mekanik')->get();
         $mekanik_asli = $mekanik[0]->pegawai;
         $mekanik_count = $mekanik_asli->count();
 
-        return view('pages.service.dashboard.dashboardservice', compact('today', 'tanggal_tahun', 'mekanik_count'));
+        return view('pages.service.dashboard.dashboardservice', compact('today', 'tanggal_tahun'));
     }
 
     /**
