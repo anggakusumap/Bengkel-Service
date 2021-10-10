@@ -79,7 +79,7 @@
                 
                 @endif
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ route('dashboardsso') }}">
+                    <a class="dropdown-item" href="https://sso.bengkel-kuy.com/sso">
                         <div class="dropdown-item-icon"><i data-feather="columns"></i></div>
                         Dashboard SSO
                     </a>
