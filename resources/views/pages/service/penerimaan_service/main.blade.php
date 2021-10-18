@@ -523,7 +523,7 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
             </div>
-            <form action="{{ url('frontoffice/customerterdaftar') }}" method="POST">
+            <form action="{{ url('https://front-office.bengkel-kuy.com/frontoffice/customerterdaftar') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <label class="small mb-1">Isikan Form Dibawah Ini</label>
