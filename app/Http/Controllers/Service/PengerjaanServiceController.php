@@ -130,7 +130,7 @@ class PengerjaanServiceController extends Controller
             } else {
                 $sparepart->status_jumlah = 'Kurang';
             }
-            $sparepart->update();
+            $sparepart->save();
 
             $kartu_gudang = new Kartugudang;
             $kartu_gudang->id_bengkel = $request['id_bengkel'] = Auth::user()->id_bengkel;
