@@ -53,7 +53,7 @@ Route::group(
                 Route::resource('jadwalmekanik', 'JadwalMekanikController');
                 Route::resource('stoksparepart', 'StokSparepartController');
                 Route::resource('pengerjaanservice', 'PengerjaanServiceController');
-                Route::post('updateservice/{id}', 'PengerjaanServiceController@Updateservice')
+                Route::put('updateservice/{id_service_advisor}', 'PengerjaanServiceController@Updateservice')
                     ->name('updateservice');
             });
 
