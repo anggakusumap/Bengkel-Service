@@ -76,6 +76,7 @@ class PengerjaanServiceController extends Controller
     {
         $service_advisor = PenerimaanService::with('kendaraan', 'customer_bengkel', 'mekanik','pitstop', 'detail_sparepart.Merksparepart','detail_sparepart.Jenissparepart',
         'detail_sparepart', 'detail_perbaikan', 'bengkel')->find($id_service_advisor);
+
         $kendaraan = MasterDataKendaraan::with('JenisBengkel')
         ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
         ->get();
@@ -92,7 +93,7 @@ class PengerjaanServiceController extends Controller
         $mekanik = Jabatan::with('pegawai.absensi_mekanik')->where('nama_jabatan', 'Mekanik')->get();
         $mekanik_asli = $mekanik[0]->pegawai;
 
-        return view('pages.service.pengerjaan_service.edit', compact('service_advisor', 'kode_sa', 'kendaraan', 'idbaru', 'customer_bengkel', 'pegawai', 'sparepart', 'jasa_perbaikan', 'mekanik_asli', 'date'));
+        return view('pages.service.pengerjaan_service.edit', compact('service_advisor', 'kendaraan', 'customer_bengkel', 'pegawai', 'sparepart', 'jasa_perbaikan', 'mekanik_asli', 'date'));
     }
 
     /**
