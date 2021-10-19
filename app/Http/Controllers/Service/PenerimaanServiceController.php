@@ -70,11 +70,17 @@ class PenerimaanServiceController extends Controller
     public function create()
     {
         $service_advisor = PenerimaanService::all();
-        $kendaraan = MasterDataKendaraan::all();
+        $kendaraan = MasterDataKendaraan::with('JenisBengkel')
+        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
+        ->get();
+        
         $customer_bengkel = CustomerBengkel::all();
-        $sparepart = Sparepart::with('Kartugudangpenjualan')->where('stock', '>', 0)->get();
+        $sparepart = DetailSparepart::with('Sparepart','Kartugudangpenjualan')->where('qty_stok', '>', 0)->get();
         $pegawai = Pegawai::all();
-        $jasa_perbaikan = MasterDataJenisPerbaikan::all();
+        $jasa_perbaikan = MasterDataJenisPerbaikan::with('JenisBengkel')
+        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
+        ->get();
+
         $date = Carbon::today()->toDateString();
 
         $id = PenerimaanService::getId();
