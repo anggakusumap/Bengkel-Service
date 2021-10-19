@@ -197,10 +197,7 @@ class PenerimaanServiceController extends Controller
         $temp1 = 0;
         foreach ($request->sparepart as $key => $item1) {
             $temp1 = $temp1 + $item1['total_harga'];
-
             $sparepart = DetailSparepart::where('id_sparepart', $item1['id_sparepart'])->first();
-
-     
             $sparepart->qty_stok = $sparepart->qty_stok - $item1['jumlah'];
 
             if ($sparepart->qty_stok >= $sparepart->stok_min) {
