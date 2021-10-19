@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-xl-auto">
-                        <a href="{{ route('pelayananservice.index') }}" class="btn btn-sm btn-light text-primary">Kembali</a>
+                        <a href="{{ route('pengerjaanservice.index') }}" class="btn btn-sm btn-light text-primary">Kembali</a>
                     </div>
                 </div>
             </div>
