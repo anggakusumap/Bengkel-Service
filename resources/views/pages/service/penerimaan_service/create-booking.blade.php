@@ -342,26 +342,26 @@
                                     </thead>
                                     <tbody>
                                         @forelse ($sparepart as $item)
-                                        <tr id="sparepart-{{ $item->id_sparepart }}" role="row" class="odd">
+                                        <tr id="sparepart-{{ $item->Sparepart->id_sparepart }}" role="row" class="odd">
                                             <th scope="row" class="small" class="sorting_1">
                                                 {{ $loop->iteration}}</th>
                                             <td class="kode_sparepart">
-                                                {{ $item->kode_sparepart }}</td>
+                                                {{ $item->Sparepart->kode_sparepart }}</td>
                                             <td class="nama_sparepart">
-                                                {{ $item->nama_sparepart }}</td>
+                                                {{ $item->Sparepart->nama_sparepart }}</td>
                                             <td class="jenis_sparepart">
-                                                {{ $item->Jenissparepart->jenis_sparepart }}
+                                                {{ $item->Sparepart->Jenissparepart->jenis_sparepart }}
                                             </td>
                                             <td class="merk_sparepart">
-                                                {{ $item->Merksparepart->merk_sparepart }}</td>
-                                            <td class="satuan">{{ $item->Konversi->satuan }}
+                                                {{ $item->Sparepart->Merksparepart->merk_sparepart }}</td>
+                                            <td class="satuan">{{ $item->Sparepart->Konversi->satuan }}
                                             </td>
-                                            <td class="stock">{{ $item->stock }}</td>
+                                            <td class="stock">{{ $item->qty_stok }}</td>
                                             <td>
-                                                <button id="{{ $item->kode_sparepart }}-button"
+                                                <button id="{{ $item->Sparepart->kode_sparepart }}-button"
                                                     class="btn btn-success btn-datatable" type="button"
                                                     data-toggle="modal"
-                                                    data-target="#Modaltambah-{{ $item->id_sparepart }}">
+                                                    data-target="#Modaltambah-{{ $item->Sparepart->id_sparepart }}">
                                                     <i class="fas fa-plus"></i>
                                                 </button>
                                             </td>
