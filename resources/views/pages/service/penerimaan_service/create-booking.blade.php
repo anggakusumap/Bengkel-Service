@@ -15,8 +15,7 @@
                         <div class="page-header-subtitle">Formulir penerimaan service kendaraan yang dilakukan Service
                             Advisor</div>
 
-                        <span class="font-weight-500 text-primary" id="id_bengkel"
-                            style="display:none">{{ Auth::user()->bengkel->id_bengkel}}</span>
+                     
                     </div>
                 </div>
             </div>
@@ -809,7 +808,7 @@
             var form = $('#form-' + sparepart[i].id_sparepart)
             var jumlah = form.find('input[name="jumlah"]').val()
             var harga = form.find('input[name="harga"]').val()
-            var id_bengkel = $('#id_bengkel').text()
+            
             var total_harga = jumlah * harga
 
             if (jumlah == 0 | jumlah == '') {
@@ -821,7 +820,7 @@
                     id_sparepart: id_sparepart,
                     jumlah: jumlah,
                     harga: harga,
-                    id_bengkel: id_bengkel,
+                  
                     total_harga: total_harga
                 }
                 dataform2.push(obj)
@@ -836,7 +835,7 @@
             console.log(span)
             var id_jenis_perbaikan = $(span).attr('id')
 
-            var id_bengkel = $('#id_bengkel').text()
+         
             // HARGA
             var td_harga = children[4]
             var harga = $(td_harga).html().trim()
@@ -846,7 +845,7 @@
                 id_service_advisor: idbaru,
                 id_jenis_perbaikan: id_jenis_perbaikan,
                 total_harga: splitharga,
-                id_bengkel: id_bengkel,
+             
             })
         }
 

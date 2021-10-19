@@ -129,11 +129,15 @@ class PenerimaanServiceController extends Controller
         $temp1 = 0;
         foreach ($request->sparepart as $key => $item1) {
             $temp1 = $temp1 + $item1['total_harga'];
-            $sparepart = Sparepart::findOrFail($item1['id_sparepart']);
-            $sparepart->stock = $sparepart->stock - $item1['jumlah'];
-            if ($sparepart->stock >= $sparepart->stock_min) {
+
+            $sparepart = DetailSparepart::where('id_sparepart', $item1['id_sparepart'])->first();
+
+     
+            $sparepart->qty_stok = $sparepart->qty_stok - $item1['jumlah'];
+
+            if ($sparepart->qty_stok >= $sparepart->stok_min) {
                 $sparepart->status_jumlah = 'Cukup';
-            } else if ($sparepart->stock == 0) {
+            } else if ($sparepart->qty_stok == 0) {
                 $sparepart->status_jumlah = 'Habis';
             } else {
                 $sparepart->status_jumlah = 'Kurang';
@@ -142,15 +146,17 @@ class PenerimaanServiceController extends Controller
 
             $kartu_gudang = new Kartugudang;
             $kartu_gudang->id_bengkel = $request['id_bengkel'] = Auth::user()->id_bengkel;
+
             $kartugudangterakhir =  $sparepart->Kartugudangsaldoakhir;
             if ($kartugudangterakhir != null)
                 $kartu_gudang->saldo_akhir = $kartugudangterakhir->saldo_akhir - $item1['jumlah'];
 
             if ($kartugudangterakhir == null)
-                $kartu_gudang->saldo_akhir =  $item1['jumlah'];
+                $kartu_gudang->saldo_akhir = $item1['jumlah'];
+
             $kartu_gudang->jumlah_keluar = $kartu_gudang->jumlah_keluar + $item1['jumlah'];
             $kartu_gudang->harga_beli = $kartu_gudang->harga + $item1['harga'];
-            $kartu_gudang->id_sparepart = $sparepart->id_sparepart;
+            $kartu_gudang->id_detail_sparepart = $sparepart->id_detail_sparepart;
             $kartu_gudang->kode_transaksi = $service->kode_sa;
             $kartu_gudang->tanggal_transaksi = $service->date;
             $kartu_gudang->jenis_kartu = 'Penjualan';
