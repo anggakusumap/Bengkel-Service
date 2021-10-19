@@ -106,15 +106,64 @@ class PengerjaanServiceController extends Controller
     public function update(Request $request, $id_service_advisor)
     {
         $service = PenerimaanService::find($id_service_advisor);
-       
+        $service->kode_sa = $request->kode_sa;
+        $service->id_customer_bengkel = $request->id_customer_bengkel;
+        $service->id_kendaraan = $request->id_kendaraan;
+        $service->odo_meter =  $request->odo_meter;
+        $service->date =  $request->date;
+        $service->plat_kendaraan =  $request->plat_kendaraan;
+        $service->keluhan_kendaraan =  $request->keluhan_kendaraan;
+        $service->id_mekanik =  $request->id_mekanik;
+        $service->status =  'menunggu';
+        $service->waktu_estimasi =  $request->waktu_estimasi;
 
-        
-        $service->status =  'selesai_service';
-        
+        $temp1 = 0;
+        foreach ($request->sparepart as $key => $item1) {
+            $temp1 = $temp1 + $item1['total_harga'];
+            $sparepart = DetailSparepart::where('id_sparepart', $item1['id_sparepart'])->first();
+            $sparepart->qty_stok = $sparepart->qty_stok - $item1['jumlah'];
 
-        $service->update();
+            if ($sparepart->qty_stok >= $sparepart->stok_min) {
+                $sparepart->status_jumlah = 'Cukup';
+            } else if ($sparepart->qty_stok == 0) {
+                $sparepart->status_jumlah = 'Habis';
+            } else {
+                $sparepart->status_jumlah = 'Kurang';
+            }
+            $sparepart->update();
 
-        return redirect()->back();
+            $kartu_gudang = new Kartugudang;
+            $kartu_gudang->id_bengkel = $request['id_bengkel'] = Auth::user()->id_bengkel;
+
+            $kartugudangterakhir =  $sparepart->Kartugudangsaldoakhir;
+            if ($kartugudangterakhir != null)
+                $kartu_gudang->saldo_akhir = $kartugudangterakhir->saldo_akhir - $item1['jumlah'];
+
+            if ($kartugudangterakhir == null)
+                $kartu_gudang->saldo_akhir = $item1['jumlah'];
+
+            $kartu_gudang->jumlah_keluar = $kartu_gudang->jumlah_keluar + $item1['jumlah'];
+            $kartu_gudang->harga_beli = $kartu_gudang->harga + $item1['harga'];
+            $kartu_gudang->id_detail_sparepart = $sparepart->id_detail_sparepart;
+            $kartu_gudang->kode_transaksi = $service->kode_sa;
+            $kartu_gudang->tanggal_transaksi = $service->date;
+            $kartu_gudang->jenis_kartu = 'Penjualan';
+            $kartu_gudang->save();
+        }
+
+        $temp2 = 0;
+        foreach ($request->jasa_perbaikan as $key => $item2) {
+            $temp2 = $temp2 + $item2['total_harga'];
+        }
+
+        $service->total_bayar = $temp1 + $temp2;
+
+
+        $service->save();
+        $service->detail_sparepart()->sync($request->sparepart);
+        $service->detail_perbaikan()->sync($request->jasa_perbaikan);
+
+        return $request;
     }
 
     /**
@@ -126,5 +175,15 @@ class PengerjaanServiceController extends Controller
     public function destroy(PengerjaanService $pengerjaanService)
     {
         //
+    }
+
+    public function Updateservice($id_service_advisor){
+        $service = PenerimaanService::find($id_service_advisor);
+        $service->status =  'selesai_service';
+        
+
+        $service->update();
+
+        return redirect()->back();
     }
 }

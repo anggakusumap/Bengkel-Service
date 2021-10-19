@@ -149,7 +149,7 @@
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                 </div>
-                <form action="{{ route('pengerjaanservice.update', $item->id_service_advisor) }}" method="POST"
+                <form action="{{ route('updateservice', $item->id_service_advisor) }}" method="POST"
                     class="d-inline">
                     @csrf
                     @method('PUT')
