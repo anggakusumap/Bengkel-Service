@@ -14,9 +14,6 @@
                         </h1>
                         <div class="page-header-subtitle">Edit Formulir penerimaan service kendaraan yang dilakukan Service
                             Advisor</div>
-
-                        <span class="font-weight-500 text-primary" id="id_bengkel"
-                            style="display:none">{{ Auth::user()->bengkel->id_bengkel}}</span>
                     </div>
                 </div>
             </div>
@@ -558,7 +555,7 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
             </div>
-            <form action="{{ route('customerterdaftar.store') }}" method="POST">
+            <form action="{{ url('https://front-office.bengkel-kuy.com/frontoffice/customerterdaftar') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <label class="small mb-1">Isikan Form Dibawah Ini</label>
@@ -803,7 +800,6 @@
             var form = $('#form-' + sparepart[i].id_sparepart)
             var jumlah = form.find('input[name="jumlah"]').val()
             var harga = form.find('input[name="harga"]').val()
-            var id_bengkel = $('#id_bengkel').text()
             var total_harga = jumlah * harga
 
             if (jumlah == 0 | jumlah == '') {
@@ -815,7 +811,6 @@
                     id_sparepart: id_sparepart,
                     jumlah: jumlah,
                     harga: harga,
-                    id_bengkel: id_bengkel,
                     total_harga: total_harga
                 }
                 dataform2.push(obj)
@@ -829,8 +824,6 @@
             var span = $(td).children()[0]
             console.log(span)
             var id_jenis_perbaikan = $(span).attr('id')
-
-            var id_bengkel = $('#id_bengkel').text()
             // HARGA
             var td_harga = children[4]
             var harga = $(td_harga).html().trim()
@@ -840,7 +833,6 @@
                 id_service_advisor: id_service_advisor,
                 id_jenis_perbaikan: id_jenis_perbaikan,
                 total_harga: splitharga,
-                id_bengkel: id_bengkel,
             })
         }
 
