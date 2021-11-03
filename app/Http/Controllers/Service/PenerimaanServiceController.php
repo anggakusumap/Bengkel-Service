@@ -235,7 +235,7 @@ class PenerimaanServiceController extends Controller
 
             $baru = Detailperbaikan::where('id_bengkel', Auth::user()->Bengkel->id_bengkel)->where('id_jenis_perbaikan', $item2['id_jenis_perbaikan'])->first();
 
-            if(!$sparepart ){
+            if(!$baru ){
                 $baru = new Detailperbaikan;
                 $baru->id_jenis_perbaikan = $item2['id_jenis_perbaikan'];
                 $baru->id_bengkel = Auth::user()->Bengkel->id_bengkel;
