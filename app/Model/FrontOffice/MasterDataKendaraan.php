@@ -40,4 +40,9 @@ class MasterDataKendaraan extends Model
     {
         return $this->belongsTo(JenisBengkel::class, 'id_jenis_bengkel', 'id_jenis_bengkel');
     }
+
+    public function DetailKendaraan()
+    {
+        return $this->belongsTo(Detailkendaraan::class, 'id_kendaraan', 'id_kendaraan');
+    }
 }

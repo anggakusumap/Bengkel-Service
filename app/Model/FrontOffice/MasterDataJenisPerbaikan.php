@@ -30,6 +30,11 @@ class MasterDataJenisPerbaikan extends Model
     {
         return $this->belongsTo(JenisBengkel::class, 'id_jenis_bengkel', 'id_jenis_bengkel');
     }
+    
+    public function DetailPerbaikan()
+    {
+        return $this->belongsTo(Detailperbaikan::class, 'id_jenis_perbaikan', 'id_jenis_perbaikan');
+    }
 
     
 }

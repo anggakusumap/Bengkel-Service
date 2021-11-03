@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
 use App\Model\FrontOffice\CustomerBengkel;
+use App\Model\FrontOffice\Detailperbaikan;
 use App\Model\FrontOffice\MasterDataJenisPerbaikan;
 use App\Model\FrontOffice\MasterDataKendaraan;
 use App\Model\Inventory\DetailSparepart;
@@ -231,6 +232,17 @@ class PenerimaanServiceController extends Controller
         $temp2 = 0;
         foreach ($request->jasa_perbaikan as $key => $item2) {
             $temp2 = $temp2 + $item2['total_harga'];
+
+            $baru = Detailperbaikan::where('id_bengkel', Auth::user()->Bengkel->id_bengkel)->where('id_jenis_perbaikan', $item2['id_jenis_perbaikan'])->first();
+
+            if(!$sparepart ){
+                $baru = new Detailperbaikan;
+                $baru->id_jenis_perbaikan = $item2['id_jenis_perbaikan'];
+                $baru->id_bengkel = Auth::user()->Bengkel->id_bengkel;
+                $baru->save();
+            }else{
+                continue;
+            }
         }
 
         $service->total_bayar = $temp1 + $temp2;
