@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
 use App\Model\FrontOffice\CustomerBengkel;
+use App\Model\FrontOffice\Detailkendaraan;
 use App\Model\FrontOffice\Detailperbaikan;
 use App\Model\FrontOffice\MasterDataJenisPerbaikan;
 use App\Model\FrontOffice\MasterDataKendaraan;
@@ -187,6 +188,16 @@ class PenerimaanServiceController extends Controller
         $service->kode_sa = $request->kode_sa;
         $service->id_customer_bengkel = $request->id_customer_bengkel;
         $service->id_kendaraan = $request->id_kendaraan;
+        $tes = Detailkendaraan::where('id_bengkel', Auth::user()->Bengkel->id_bengkel)->where('id_kendaraan', $request->id_kendaraan)->first();
+        if(!$tes ){
+            $tes = new Detailkendaraan;
+            $tes->id_kendaraan = $request->id_kendaraan;
+            $tes->id_bengkel = Auth::user()->Bengkel->id_bengkel;
+            $tes->save();
+        }else{
+            
+        }
+
         $service->odo_meter =  $request->odo_meter;
         $service->date =  $request->date;
         $service->plat_kendaraan =  $request->plat_kendaraan;
