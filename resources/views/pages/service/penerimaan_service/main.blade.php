@@ -472,14 +472,16 @@
                         <div class="form-group">
                             <label class="small mb-1" for="harga">Harga</label>
                             <input class="form-control" name="harga" type="text" id="harga"
-                                placeholder="Input Harga Sparepart" value="{{ $item->Kartugudangpenjualan['harga_beli'] }}"></input>
+                                placeholder="Input Harga Sparepart"
+                                value="{{ $item->Kartugudangpenjualan['harga_beli'] }}"></input>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-                        <button class="btn btn-success" onclick="konfirmsparepart(event, {{ $item->Sparepart->id_sparepart }})"
-                            type="button" data-dismiss="modal">Tambah</button>
+                        <button class="btn btn-success"
+                            onclick="konfirmsparepart(event, {{ $item->Sparepart->id_sparepart }})" type="button"
+                            data-dismiss="modal">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -503,7 +505,8 @@
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
                     <button class="btn btn-primary" type="button"
-                        onclick="kirimfrontoffice(event,{{ $sparepart }},{{ $jasa_perbaikan }},{{ $idbaru }})">Ya Sudah!</button>
+                        onclick="kirimfrontoffice(event,{{ $sparepart }},{{ $jasa_perbaikan }},{{ $idbaru }})">Ya
+                        Sudah!</button>
                 </div>
             </div>
         </div>
@@ -520,7 +523,8 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
             </div>
-            <form action="{{ url('https://front-office.bengkel-kuy.com/frontoffice/customerterdaftar') }}" method="POST">
+            <form action="{{ url('https://front-office.bengkel-kuy.com/frontoffice/customerterdaftar') }}"
+                method="POST">
                 @csrf
                 <div class="modal-body">
                     <label class="small mb-1">Isikan Form Dibawah Ini</label>
@@ -638,11 +642,9 @@
             ]
         });
 
-        $('#dataTablePerbaikan').DataTable({
-        });
+        $('#dataTablePerbaikan').DataTable({});
 
-        $('#dataTableSparepart').DataTable({
-        });
+        $('#dataTableSparepart').DataTable({});
     });
 
     function konfirmperbaikan(event, id_jenis_perbaikan) {
@@ -697,7 +699,7 @@
                 var merk_sparepart = $(data.find('.merk_sparepart')[0]).text()
                 var satuan = $(data.find('.satuan')[0]).text()
                 var template = $($('#template_delete_button_sparepart').html())
-            
+
                 var total = new Intl.NumberFormat('id', {
                     style: 'currency',
                     currency: 'IDR'
@@ -765,7 +767,7 @@
             var form = $('#form-' + sparepart[i].id_sparepart)
             var jumlah = form.find('input[name="jumlah"]').val()
             var harga = form.find('input[name="harga"]').val()
-          
+
             var total_harga = jumlah * harga
 
             if (jumlah == 0 | jumlah == '') {
@@ -777,7 +779,7 @@
                     id_sparepart: id_sparepart,
                     jumlah: jumlah,
                     harga: harga,
-                   
+
                     total_harga: total_harga
                 }
                 dataform2.push(obj)
@@ -792,7 +794,7 @@
             console.log(span)
             var id_jenis_perbaikan = $(span).attr('id')
 
-          
+
             // HARGA
             var td_harga = children[4]
             var harga = $(td_harga).html().trim()
@@ -802,12 +804,16 @@
                 id_service_advisor: idbaru,
                 id_jenis_perbaikan: id_jenis_perbaikan,
                 total_harga: splitharga,
-                
+
             })
         }
 
         if (dataform3.length == 0) {
-            alert('Data Perbaikan Kosong')
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Anda Belum Memilih Perbaikan!',
+            })
         } else {
             var data = {
                 _token: _token,
@@ -831,12 +837,39 @@
                 method: 'post',
                 url: '/service/penerimaanservice',
                 data: data,
+                beforeSend: function () {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Berhasil Mengirim Data ke Front Office'
+                    })
+
+                },
                 success: function (response) {
                     window.location.href = '/service/penerimaanservice'
+                    swal.fire({
+                        icon: 'success',
+                        html: '<h5>Success!</h5>'
+                    });
 
                 },
                 error: function (response) {
                     console.log(response)
+                    swal.fire({
+                        icon: 'error',
+                        html: '<h5>Error!</h5>'
+                    });
                 }
             });
         }
