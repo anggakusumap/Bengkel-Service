@@ -875,6 +875,25 @@
                 method: 'post',
                 url: '/service/penerimaanservice',
                 data: data,
+                beforeSend: function () {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Berhasil Mengirim Data ke Front Office'
+                    })
+
+                },
                 success: function (response) {
                     window.location.href = '/service/penerimaanservice'
 
