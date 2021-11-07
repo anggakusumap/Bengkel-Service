@@ -37,16 +37,16 @@ class PenerimaanServiceController extends Controller
         $service_advisor = PenerimaanService::all();
 
         $kendaraan = MasterDataKendaraan::with('JenisBengkel')
-        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
-        ->get();
+            ->where('id_jenis_bengkel', '=', Auth::user()->Bengkel->id_jenis_bengkel)
+            ->get();
 
         $customer_bengkel = CustomerBengkel::get();
-        $sparepart = DetailSparepart::with('Sparepart','Kartugudangpenjualan')->where('qty_stok', '>', 0)->get();
+        $sparepart = DetailSparepart::with('Sparepart', 'Kartugudangpenjualan')->where('qty_stok', '>', 0)->get();
         $pegawai = Pegawai::all();
 
         $jasa_perbaikan = MasterDataJenisPerbaikan::with('JenisBengkel')
-        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
-        ->get();
+            ->where('id_jenis_bengkel', '=', Auth::user()->Bengkel->id_jenis_bengkel)
+            ->get();
 
 
         $date = Carbon::today()->toDateString();
@@ -56,7 +56,7 @@ class PenerimaanServiceController extends Controller
         $idlama = $value->id_service_advisor;
         $idbaru = $idlama + 1;
         $blt = date('m');
-        $kode_sa = 'SPK-' . $blt . '/' . $idbaru;
+        $kode_sa = 'SPK-' . $blt . '/' . rand(1000, 9999);
 
         $mekanik = Jabatan::with('pegawai.absensi_mekanik')->where('nama_jabatan', 'Mekanik')->get();
         $mekanik_asli = $mekanik[0]->pegawai;
@@ -73,15 +73,15 @@ class PenerimaanServiceController extends Controller
     {
         $service_advisor = PenerimaanService::all();
         $kendaraan = MasterDataKendaraan::with('JenisBengkel')
-        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
-        ->get();
-        
+            ->where('id_jenis_bengkel', '=', Auth::user()->Bengkel->id_jenis_bengkel)
+            ->get();
+
         $customer_bengkel = CustomerBengkel::all();
-        $sparepart = DetailSparepart::with('Sparepart','Kartugudangpenjualan')->where('qty_stok', '>', 0)->get();
+        $sparepart = DetailSparepart::with('Sparepart', 'Kartugudangpenjualan')->where('qty_stok', '>', 0)->get();
         $pegawai = Pegawai::all();
         $jasa_perbaikan = MasterDataJenisPerbaikan::with('JenisBengkel')
-        ->where('id_jenis_bengkel','=',Auth::user()->Bengkel->id_jenis_bengkel)
-        ->get();
+            ->where('id_jenis_bengkel', '=', Auth::user()->Bengkel->id_jenis_bengkel)
+            ->get();
 
         $date = Carbon::today()->toDateString();
 
@@ -90,7 +90,7 @@ class PenerimaanServiceController extends Controller
         $idlama = $value->id_service_advisor;
         $idbaru = $idlama + 1;
         $blt = date('m');
-        $kode_sa = 'SPK-' . $blt . '/' . $idbaru;
+        $kode_sa = 'SPK-' . $blt . '/' . rand(1000, 9999);
 
         $mekanik = Jabatan::with('pegawai.absensi_mekanik')->where('nama_jabatan', 'Mekanik')->get();
         $mekanik_asli = $mekanik[0]->pegawai;
@@ -121,15 +121,14 @@ class PenerimaanServiceController extends Controller
         $service->id_customer_bengkel = $request->id_customer_bengkel;
         $service->id_kendaraan = $request->id_kendaraan;
         $tes = Detailkendaraan::where('id_bengkel', Auth::user()->Bengkel->id_bengkel)->where('id_kendaraan', $request->id_kendaraan)->first();
-        if(!$tes ){
+        if (!$tes) {
             $tes = new Detailkendaraan;
             $tes->id_kendaraan = $request->id_kendaraan;
             $tes->id_bengkel = Auth::user()->Bengkel->id_bengkel;
             $tes->save();
-        }else{
-            
+        } else {
         }
-        
+
         $service->odo_meter =  $request->odo_meter;
         $service->date =  $request->date;
         $service->plat_kendaraan =  $request->plat_kendaraan;
@@ -144,7 +143,7 @@ class PenerimaanServiceController extends Controller
 
             $sparepart = DetailSparepart::where('id_sparepart', $item1['id_sparepart'])->first();
 
-     
+
             $sparepart->qty_stok = $sparepart->qty_stok - $item1['jumlah'];
 
             if ($sparepart->qty_stok >= $sparepart->stok_min) {
@@ -181,12 +180,12 @@ class PenerimaanServiceController extends Controller
 
             $baru = Detailperbaikan::where('id_bengkel', Auth::user()->Bengkel->id_bengkel)->where('id_jenis_perbaikan', $item2['id_jenis_perbaikan'])->first();
 
-            if(!$baru ){
+            if (!$baru) {
                 $baru = new Detailperbaikan;
                 $baru->id_jenis_perbaikan = $item2['id_jenis_perbaikan'];
                 $baru->id_bengkel = Auth::user()->Bengkel->id_bengkel;
                 $baru->save();
-            }else{
+            } else {
                 continue;
             }
         }
@@ -210,13 +209,12 @@ class PenerimaanServiceController extends Controller
         $service->id_customer_bengkel = $request->id_customer_bengkel;
         $service->id_kendaraan = $request->id_kendaraan;
         $tes = Detailkendaraan::where('id_bengkel', Auth::user()->Bengkel->id_bengkel)->where('id_kendaraan', $request->id_kendaraan)->first();
-        if(!$tes ){
+        if (!$tes) {
             $tes = new Detailkendaraan;
             $tes->id_kendaraan = $request->id_kendaraan;
             $tes->id_bengkel = Auth::user()->Bengkel->id_bengkel;
             $tes->save();
-        }else{
-            
+        } else {
         }
 
         $service->odo_meter =  $request->odo_meter;
@@ -267,12 +265,12 @@ class PenerimaanServiceController extends Controller
 
             $baru = Detailperbaikan::where('id_bengkel', Auth::user()->Bengkel->id_bengkel)->where('id_jenis_perbaikan', $item2['id_jenis_perbaikan'])->first();
 
-            if(!$baru ){
+            if (!$baru) {
                 $baru = new Detailperbaikan;
                 $baru->id_jenis_perbaikan = $item2['id_jenis_perbaikan'];
                 $baru->id_bengkel = Auth::user()->Bengkel->id_bengkel;
                 $baru->save();
-            }else{
+            } else {
                 continue;
             }
         }
@@ -296,11 +294,20 @@ class PenerimaanServiceController extends Controller
      */
     public function show($id_service_advisor)
     {
-        $pelayanan = PenerimaanService::with('kendaraan', 'customer_bengkel', 'mekanik','pitstop', 'detail_sparepart.Merksparepart','detail_sparepart.Jenissparepart',
-        'detail_sparepart', 'detail_perbaikan', 'bengkel')->find($id_service_advisor);
-        
+        $pelayanan = PenerimaanService::with(
+            'kendaraan',
+            'customer_bengkel',
+            'mekanik',
+            'pitstop',
+            'detail_sparepart.Merksparepart',
+            'detail_sparepart.Jenissparepart',
+            'detail_sparepart',
+            'detail_perbaikan',
+            'bengkel'
+        )->find($id_service_advisor);
 
-        return view('pages.service.pengerjaan_service.show',compact('pelayanan'));
+
+        return view('pages.service.pengerjaan_service.show', compact('pelayanan'));
     }
 
     /**
