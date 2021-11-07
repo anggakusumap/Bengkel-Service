@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-xl-6 col-md-6 mb-4">
             <!-- Dashboard info widget 1-->
             <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-primary h-100">
@@ -68,7 +68,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <div class="small font-weight-bold text-primary mb-1">Jumlah Hadir Mekanik</div>
-                            {{-- <div class="h6">Jumlah : {{ $mekanik_count }}</div> --}}
+                            <div class="h6">Jumlah : {{ $mekanik_count }}</div> 
                         </div>
                         <div class="ml-2"><svg class="svg-inline--fa fa-dollar-sign fa-w-9 fa-2x text-gray-200"
                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="dollar-sign"
@@ -125,7 +125,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </main>
 
 <script>
