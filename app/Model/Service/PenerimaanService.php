@@ -10,6 +10,7 @@ use App\Model\FrontOffice\MasterDataPitstop;
 use App\Model\Inventory\Sparepart;
 use App\Model\Kepegawaian\Pegawai;
 use App\Model\SingleSignOn\Bengkel;
+use App\Model\SingleSignOn\Cabang;
 use App\Scopes\OwnershipScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,7 +28,7 @@ class PenerimaanService extends Model
     protected $primaryKey = 'id_service_advisor';
 
     protected $fillable = [
-        'id_kendaraan', 'date', 'id_customer_bengkel', 'id_bengkel', 'keluhan_kendaraan', 'id_jenis_perbaikan', 'id_sparepart', 'id_pegawai', 'waktu_estimasi', 'id_mekanik', 'status'
+        'id_kendaraan', 'date', 'id_customer_bengkel', 'id_bengkel', 'keluhan_kendaraan', 'id_jenis_perbaikan', 'id_sparepart', 'id_pegawai', 'waktu_estimasi', 'id_mekanik', 'status', 'id_cabang'
     ];
 
     protected $hidden = [
@@ -56,6 +57,11 @@ class PenerimaanService extends Model
     public function bengkel()
     {
         return $this->belongsTo(Bengkel::class, 'id_bengkel');
+    }
+
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class, 'id_cabang');
     }
 
     public function kendaraan()

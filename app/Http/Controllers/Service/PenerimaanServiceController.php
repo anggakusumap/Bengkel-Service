@@ -224,6 +224,12 @@ class PenerimaanServiceController extends Controller
         $service->id_mekanik =  $request->id_mekanik;
         $service->status =  'menunggu';
         $service->waktu_estimasi =  $request->waktu_estimasi;
+        
+        if(Auth::user()->pegawai->cabang != null){
+            $service->id_cabang = Auth::user()->pegawai->cabang->id_cabang;
+        }else{
+
+        }
 
         $temp1 = 0;
         foreach ($request->sparepart as $key => $item1) {
