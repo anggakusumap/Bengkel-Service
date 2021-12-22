@@ -277,10 +277,10 @@ class PenerimaanServiceController extends Controller
 
         $service->total_bayar = $temp1 + $temp2;
         
-        if(Auth::user()->pegawai->cabang == null){
-          
-        }else{
+        if(Auth::user()->pegawai->cabang != null){
             $service->id_cabang = Auth::user()->pegawai->cabang->id_cabang;
+        }else{
+            
         }
 
         $service->save();
